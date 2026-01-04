@@ -36,16 +36,22 @@ print("="*30)
 print("For 100 experiments: ")
 result = two_dice_sum(100)
 for i in range(0, 11):
-    print(f"{i}: in theory: {theoretical_result[i]:.2%}, monte-carlo method: {result[i]:.2%}")
+    print(f"{i+2:2}: in theory: {theoretical_result[i]:2.3%},\t monte-carlo method: {result[i]:2.3%}")
 
 print("="*30)
-print("For 10000 experiments: ")
-result = two_dice_sum(10000)
+print("For 10_000 experiments: ")
+result = two_dice_sum(10_000)
 for i in range(0, 11):
-    print(f"{i}: in theory: {theoretical_result[i]:.2%}, monte-carlo method: {result[i]:.2%}")
+    print(f"{i+2:2}: in theory: {theoretical_result[i]:2.3%},\t monte-carlo method: {result[i]:2.3%}")
 
 print("="*30)
-print("For 1000000 experiments: ")
-result = two_dice_sum(1000000)
+print("For 1_000_000 experiments: ")
+result = two_dice_sum(1_000_000)
 for i in range(0, 11):
-    print(f"{i}: in theory: {theoretical_result[i]:.2%}, monte-carlo method: {result[i]:.2%}")
+    print(f"{i+2:2}: in theory: {theoretical_result[i]:2.3%},\t monte-carlo method: {result[i]:2.3%}")
+
+print("="*30)
+print("For 10_000_000 experiments: ")
+result = two_dice_sum(10_000_000)
+for i in range(0, 11):
+    print(f"{i+2:2}: in theory: {theoretical_result[i]:2.3%},\t monte-carlo method: {result[i]:2.3%}")
