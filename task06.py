@@ -30,10 +30,11 @@ def greedy_algorithm(items: dict[dict], budget: int) -> list[str]:
         [ (attr["calories"]/attr["cost"], name) for name, attr in items.items() ], 
         reverse=True)
     result = []
+    current_budget = budget
     for item in food_preference:
         item_cost = items[item[1]]["cost"]
-        if budget >= item_cost:
-            budget -= item_cost
+        if current_budget >= item_cost:
+            current_budget -= item_cost
             result.append(item[1])
     return result
 
@@ -43,19 +44,29 @@ def dynamic_programming(items: dict[dict], budget: int) -> list[str]:
     Returns a list of items selected.
     """
     food_names = list(items.keys())
+    calories = [ items[food]["calories"] for food in food_names ]
+    cost = [ items[food]["cost"] for food in food_names ]
     n = len(food_names)
-    sub_choices = [[0 for b in range(budget + 1)] for i in range(n + 1)]
-
+    sub_choices = [[0 for _ in range(budget + 1)] for i in range(n + 1)]
+    food_choices = [[ [] for _ in range(budget + 1)] for i in range(n + 1)]
     for i in range(n + 1):
         for b in range(budget + 1):
             if i == 0 or b == 0:
                 sub_choices[i][b] = 0
-            elif items[food_names[i - 1]]["cost"] <= b:
-                # K[i][w] = max(val[i - 1] + K[i - 1][w - wt[i - 1]], K[i - 1][w])
-                sub_choices[i][b] = max(items[food_names[i - 1]]["calories"] + sub_choices[i - 1][b - items[food_names[i - 1]]["cost"]], sub_choices[i - 1][b])
+                food_choices[i][b] = []
+            elif cost[i - 1] <= b:
+                new_profit = calories[i - 1] + sub_choices[i - 1][b - cost[i - 1]]
+                old_profit = sub_choices[i - 1][b]
+                if new_profit > old_profit:
+                    food_choices[i][b] = food_choices[i - 1][b - cost[i - 1]][:]
+                    food_choices[i][b].append(food_names[i - 1])
+                else:
+                    food_choices[i][b] = food_choices[i - 1][b][:]
+                sub_choices[i][b] = max(new_profit, old_profit)
             else:
                 sub_choices[i][b] = sub_choices[i - 1][b]
-    return sub_choices[n][budget]
+                food_choices[i][b] = food_choices[i - 1][b][:]
+    return food_choices[n][budget]
 
 items = {
     "pizza": {"cost": 50, "calories": 300},
@@ -66,6 +77,5 @@ items = {
     "potato": {"cost": 25, "calories": 350}
 }
 
-print(greedy_algorithm(items, 100))
-
-print(dynamic_programming(items, 100))
+print("Greedy algorithm result: ", greedy_algorithm(items, 100))
+print("Dynamic programming result: ", dynamic_programming(items, 100))
