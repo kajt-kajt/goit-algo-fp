@@ -59,7 +59,7 @@ def draw_heap(heap):
     draw_tree(heap_tree[0])
 
 
-# heap_array = [0, 4, 5, 10, 1, 3]
-# heapq.heapify(heap_array)
-# draw_heap(heap_array)
+heap_array = [0, 4, 5, 10, 1, 3]
+heapq.heapify(heap_array)
+draw_heap(heap_array)
 
